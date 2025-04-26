@@ -86,7 +86,7 @@
                     s = s + "<div class=\"col-md-6 col-lg-4 wow animate fadeInLeft \" data-wow-delay=\"200ms\" data-wow-duration=\"1500ms\">";
                     s = s + "<div class=\"single-service layout-2 layout-3\">";
                     s = s + "<div class=\"thumb\">";
-                    s = s + "<a href=\"service-details.html\"><img src=\"myuploads/" + subobj.vphoto + "\" alt=\"\"></a>";
+                    s = s + "<a href=\"service-details.html\"><img src=\"myuploads/" + subobj.photo + "\" alt=\"\"></a>";
                     s = s + "</div>";
                     s = s + "<div class=\"single-inner\">";
 
@@ -231,31 +231,41 @@
         <!-- End breadcrumbs section -->
 
         <!-- Start login-area section -->
-        <section id="down" class="login-area sec-p">
-            <div class="contact-form">
+        <section id="down" class="login-area sec-p" style="padding: 50px 20px; background-color: #f9fafc; font-family: 'Segoe UI', sans-serif;">
+  <div class="contact-form" style="max-width: 700px; margin: auto; background: #fff; padding: 30px 40px; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.1);">
 
-                <h2>Manage Photos</h2>
-                <form action="#" method="post" enctype="multipart/form-data">
-                    <div class="row">
-                        
-                        <div class="col-12">
-                            <input type="file" name="photo" id="vphoto" placeholder="Vendor Photo :">
-                        </div>
-                        <div class="col-12">
+    <h2 style="text-align: center; margin-bottom: 25px; color: #333;">Manage Photos</h2>
 
-                            <textarea name="message" cols="30" rows="10" id="vdesc" placeholder="Vendor Description"></textarea>
-                            <input type="button" onclick="managePhotos()" value="Add">
-                        </div>
-                    </div>
-                    <br>
-                    <h2>Already Added Photos</h2>
-                    <br>
-                    <div class="row g-4 container" id="show">
+    <form action="#" method="post" enctype="multipart/form-data">
+      <div class="row" style="display: flex; flex-direction: column; gap: 20px;">
 
-                    </div>
-                </form>
-            </div>
-        </section>
+        <div class="col-12">
+          <label for="vphoto" style="display: block; margin-bottom: 8px; font-weight: 600; color: #444;">Upload Photo</label>
+          <input type="file" name="photo" id="vphoto" style="padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+
+        <div class="col-12">
+          <label for="vdesc" style="display: block; margin-bottom: 8px; font-weight: 600; color: #444;">Description</label>
+          <textarea name="message" id="vdesc" rows="5" placeholder="Vendor Description..." style="padding: 12px; width: 100%; border: 1px solid #ccc; border-radius: 6px; resize: vertical;"></textarea>
+        </div>
+
+        <div class="col-12" style="text-align: right;">
+          <input type="button" onclick="managePhotos()" value=" Add" style="padding: 10px 20px; background-color: #007bff; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s;"
+          onmouseover="this.style.backgroundColor='#0056b3'" 
+          onmouseout="this.style.backgroundColor='#007bff'">
+        </div>
+      </div>
+
+      <hr style="margin: 40px 0; border: none; border-top: 1px solid #eee;">
+
+      <h2 style="text-align: center; color: #333; margin-bottom: 30px">️ Already Added Photos</h2>
+      <div id="show" class="row g-4 container">
+        <!-- JS will inject cards here -->
+      </div>
+    </form>
+  </div>
+</section>
+
         <!-- End login-area section -->
 
         <!-- Start footer section -->
