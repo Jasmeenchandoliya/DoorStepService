@@ -78,37 +78,33 @@
 
             }
             function renderHTML1(ans1) {
-                if(ans1==="success"){
-                    alert("City added successfully");
-                }else{
-                    alert("City already exist");
-                }
-                console.log(ans1);
-                var mainobj = JSON.parse(ans1);
-                var arr = mainobj["ans"];
-                alert(ans1);
-                var s = "";
-                for (var i = 0; i < arr.length; i++)
-                {
-                    var subobj = arr[i];
+    console.log(ans1);
+    var mainobj = JSON.parse(ans1);
+    var arr = mainobj["ans"];
+    var s = "";
 
+    for (var i = 0; i < arr.length; i++) {
+        var subobj = arr[i];
 
-                    s = s + "<div class=\"col-md-6 col-lg-4 wow animate fadeInLeft \" data-wow-delay=\"200ms\" data-wow-duration=\"1500ms\">";
-                    s = s + "<div class=\"single-service layout-2 layout-3\">";
-                    s = s + "<div class=\"thumb\">";
-                    s = s + "<a href=\"service-details.html\"><img src=\"myuploads/" + subobj.cityphoto + "\" alt=\"\"></a>";
-                    s = s + "</div>";
-                    s = s + "<div class=\"single-inner\">";
+        s = s + "<div class=\"col-md-6 col-lg-4 wow animate fadeInLeft\" data-wow-delay=\"200ms\" data-wow-duration=\"1500ms\">";
+        s = s + "<div class=\"single-service layout-2 layout-3\">";
+        s = s + "<div class=\"thumb\">";
+        s = s + "<a href=\"service-details.html\"><img src=\"myuploads/" + subobj.cityphoto + "\" alt=\"\"></a>";
+        s = s + "</div>";
+        s = s + "<div class=\"single-inner\">";
+        s = s + "<h4>" + subobj.cityname + "</h4>";
+        
+        // Adding inline CSS to the Delete button
+        s += "<input type='button' onclick='deleteCity(" + subobj.cityid + ")' value='Delete' style='padding: 8px 15px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;'>";
+        
+        s = s + "</div>";
+        s = s + "</div>";
+        s = s + "</div>";
+    }
 
-                    s = s + "<h4>" + subobj.cityname + "</h4>";
+    document.getElementById("show").innerHTML = s;
+}
 
-                    s += `<input type="button" onclick="deleteCity(${subobj.cityid})" value="Delete">`;
-                    s = s + "</div>";
-                    s = s + "</div>";
-                    s = s + "</div>";
-                }
-                document.getElementById("show").innerHTML = s;
-            }
         </script>
 
     </head>
@@ -241,33 +237,53 @@
         <!-- End breadcrumbs section -->
 
         <!-- Start login-area section -->
-        <section id="down" class="login-area sec-p">
-            <div class="contact-form">
+        <section id="down" class="login-area sec-p" style="padding: 60px 0; background: #f4f7fb;">
+    <div class="contact-form" style="max-width: 800px; margin: auto; background: #fff; padding: 40px 30px; border-radius: 10px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);">
+        
+        <h2 style="text-align: center; font-size: 28px; font-weight: 600; margin-bottom: 30px; color: #333;">Manage Cities</h2>
 
-                <h2>Manage Cities</h2>
-                <form action="#" method="post" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <input type="text" name="city name" id="cityname" placeholder="City Name :">
-                        </div>
-                        <div class="col-lg-6">
-                            <input type="file" name="city photo" id="cityphoto" placeholder="City Photo :">
-                        </div>
-                        <div class="col-12">
+        <form action="#" method="post" enctype="multipart/form-data">
+            <div class="row" style="display: flex; flex-wrap: wrap; gap: 20px;">
 
-                            <textarea name="message" cols="30" rows="10" id="citydescription" placeholder="City Description"></textarea>
-                            <input type="button" onclick="manageCities()" value="Add">
-                        </div>
-                    </div>
-                    <br>
-                    <h2>Already Added Cities</h2>
-                    <br>
-                    <div class="row g-4 container" id="show">
+                <!-- City Name -->
+                <div class="col-lg-6" style="flex: 0 0 48%; padding-right: 10px;">
+                    <input type="text" name="city name" id="cityname" placeholder="City Name :"
+                        style="width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; margin-bottom: 20px;">
+                </div>
 
-                    </div>
-                </form>
+                <!-- City Photo -->
+                <div class="col-lg-6" style="flex: 0 0 48%; padding-left: 10px;">
+                    <input type="file" name="city photo" id="cityphoto"
+                        style="width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; margin-bottom: 20px;">
+                </div>
+
+                <!-- City Description -->
+                <div class="col-12" style="width: 100%;">
+                    <textarea name="message" cols="30" rows="10" id="citydescription" placeholder="City Description"
+                        style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; resize: vertical; margin-bottom: 20px;"></textarea>
+                </div>
+
+                <!-- Add Button -->
+                <div class="col-12" style="width: 100%; text-align: center;">
+                    <input type="button" onclick="manageCities()" value="Add"
+                        style="padding: 12px 20px; background-color: #5BB543; color: white; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s;"
+                        onmouseover="this.style.backgroundColor='#4da239';" onmouseout="this.style.backgroundColor='#5BB543';">
+                </div>
             </div>
-        </section>
+
+            <br>
+
+            <h2 style="font-size: 22px; font-weight: 600; color: #333;">Already Added Cities</h2>
+            <br>
+
+            <!-- Show Already Added Cities -->
+            <div class="row g-4 container" id="show" style="display: flex; flex-wrap: wrap; gap: 20px;">
+
+            </div>
+        </form>
+    </div>
+</section>
+
         <!-- End login-area section -->
 
         <!-- Start footer section -->
