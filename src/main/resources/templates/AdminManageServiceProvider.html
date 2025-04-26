@@ -35,7 +35,7 @@
         <script>
             function Accept(id)
             {
-                //alert("accept button clicked");
+                alert("accept button clicked");
                 fetch("/Accept?id=" + id)
                         .then(res => res.text())
                         .then((ans) => renderAccept(ans));
@@ -48,12 +48,12 @@
 
             function Block(id)
             {
-                //alert("Block button clicked");
+                alert("Block button clicked");
                 fetch("/Block?id=" + id)
                         .then(res => res.text())
                         .then((ans) => renderBlock(ans));
             }
-             function renderBlock(ans)
+            function renderBlock(ans)
             {
                 console.log(ans);
                 ManageServiceProvider();
@@ -68,68 +68,65 @@
 
             }
             function renderHTML1(ans) {
-                if (ans === "success") {
-                    alert("Service added Successfully");
-                } else {
-                    alert("Service already exist");
-                }
-                console.log(ans);
-                var mainobj = JSON.parse(ans);
-                var arr = mainobj["ans"];
-                console.log(arr);
-                var s = "";
-                for (var i = 0; i < arr.length; i++)
-                {
-                    var subobj = arr[i];
-                    s += "<div class=\"order-table\" style=\"overflow-x:auto;\">";
-                    s += "<table style=\"width:100%\">";
-                    s += "<thead>";
-                    s += "<tr class=\"head\">";
-                    s += "<th>Vendor Name</th>";
-                    s += "<th>Email</th>";
-                    s += "<th>City</th>";
-                    s += "<th>Service</th>";
-                    s += "<th>Subservice</th>";
-                    s += "<th>Contact</th>";
-                    s += "<th>Photo</th>";
-                    s += "<th>Price</th>";
-                    s += "<th>Status</th>";
-                    s += "<th>Action</th>";
-                    s += "</tr>";
-                    s += "</thead>";
-                    s += "<tr>";
-                    s += "<td data-label=\"Vendor Name\">" + subobj.vname + "</td>";
-                    s += "<td data-label=\"Email\">" + subobj.vemail + "</td>";
-                    s += "<td data-label=\"City\">" + subobj.vcity + "</td>";
-                    s += "<td data-label=\"Service\">" + subobj.vservice + "</td>";
-                    s += "<td data-label=\"Subservice\">" + subobj.vsservice + "</td>";
-                    s += "<td data-label=\"Contact\">" + subobj.vcontact + "</td>";
-                    s += "<td data-label=\"Photo\"><img src=\"myuploads/"  + subobj.vphoto +  "\" alt=\" style=\"width:40px; height:40px; border-radius:50%; object-fit:cover;\"></td>";
-                    s += "<td data-label=\"Price\">" + subobj.vprice + "</td>";
-                    s += "<td data-label=\"Status\">";
-                    s += "<div class=\"action\">";
-                    if(subobj.vstatus==="Block")
-                    {
-                        s += "<td><input type=\"button\" onclick=\"\" value=\"Accept\" style=\"padding: 8px 16px; margin-right: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;\"></td>";
-                        
-                    }
-                    
-                    else if(subobj.vstatus==="Accept")
-                    {
-                        s += "<td><input type=\"button\" onclick=\"\" value=\"Block\" style=\"padding: 8px 16px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;\"></td>";
-                    }
-                    
-                    
-                    s += "</div>";
-                    s += "</td>";
-                    s += "</tr>";
-                    s+="</table>";
-                    s+="</div>";
-                    
+    console.log(ans);
+    var mainobj = JSON.parse(ans);
+    var arr = mainobj["ans"];
+    console.log(arr);
+    var s = "";
 
-                }
-                document.getElementById("show").innerHTML = s;
-            }
+    s += "<div class='order-table' style='overflow-x:auto; border:1px solid #ccc; border-radius:10px; padding:10px;'>";
+    s += "<table style='width:100%; border-collapse:collapse; font-family:Arial, sans-serif;'>";
+    s += "<thead>";
+    s += "<tr style='background-color:#f2f2f2; color:#333; text-align:left;'>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Vendor Name</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Email</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>City</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Service</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Subservice</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Contact</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Photo</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Price</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Status</th>";
+    s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Action</th>";
+    s += "</tr>";
+    s += "</thead>";
+
+    for (var i = 0; i < arr.length; i++) {
+        var subobj = arr[i];
+
+        s += "<tr>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.vname + "</td>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.vemail + "</td>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.vcity + "</td>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.vservice + "</td>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.vsservice + "</td>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.vcontact + "</td>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'><img src='myuploads/" + subobj.vphoto + "' alt='' style='width:40px; height:40px; border-radius:50%; object-fit:cover;'></td>";
+        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.vprice + "</td>";
+
+        if (subobj.vstatus === "Blocked") {
+            s += "<td style='padding:10px; border-bottom:1px solid #ddd; color:#f44336;'>Blocked</td>";
+            s += `<td style='padding:10px; border-bottom:1px solid #ddd;'>
+                    <input type="button" onclick="Accept(${subobj.vid})" value="Accept"
+                        style="padding:8px 16px; background-color:#4CAF50; color:white; border:none; border-radius:4px; cursor:pointer;">
+                 </td>`;
+        } else {
+            s += "<td style='padding:10px; border-bottom:1px solid #ddd; color:#2196F3;'>Accepted</td>";
+            s += `<td style='padding:10px; border-bottom:1px solid #ddd;'>
+                    <input type="button" onclick="Block(${subobj.vid})" value="Block"
+                        style="padding:8px 16px; background-color:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">
+                 </td>`;
+        }
+
+        s += "</tr>";
+    }
+
+    s += "</table>";
+    s += "</div>";
+
+    document.getElementById("show").innerHTML = s;
+}
+ 
         </script>
     </head>
 
@@ -262,93 +259,28 @@
 
         <!-- Start login-area section -->
         <section id="down" class="login-area sec-p">
-            <div class="container" id="show">
-                <div class="order-table" style="overflow-x:auto;">
-                    <table style="width:100%">
-                        <thead>
-                            <tr class="head">
-                                <th>Vendor Name</th>
-                                <th>Email</th>
-                                <th>City</th>
-                                <th>Service</th>
-                                <th>Subservice</th>
-                                <th>Contact</th>
-                                <th>Photo</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <!--<tr>
-                            <td data-label="Service Title">
-                                <img src="assets/images/table-data/table-data-1.jpg" alt="">
-                                <span>Hair Cut Service</span>
-                            </td>
-                            <td data-label="Order ID">#200124001</td>
-                            <td data-label="Order Ammount">1222.8365</td>
-                            <td data-label="Status">Complete</td>
-                            <td data-label="Action">
-                                <div class="action">
-                                    <div class="view"><i class="bi bi-eye"></i></div>
-                                    <div class="delete"><i class="bi bi-trash3"></i></div>
-                                </div>
-                            </td>
-                            <td data-label="Order Ammount">1222.8365</td>
-                            <td data-label="Status">Complete</td>
-                            <td data-label="Order Ammount">1222.8365</td>
-                            <td data-label="Status">Complete</td>
-                        </tr>
-                        
-                        <tr>
-                            <td data-label="Service Title">
-                                <img src="assets/images/table-data/table-data-1.jpg" alt="">
-                                <span>Hair Cut Service</span>
-                            </td>
-                            <td data-label="Order ID">#200124001</td>
-                            <td data-label="Order Ammount">1222.8365</td>
-                            <td data-label="Status">Complete</td>
-                            <td data-label="Action">
-                                <div class="action">
-                                    <div class="view"><i class="bi bi-eye"></i></div>
-                                    <div class="delete"><i class="bi bi-trash3"></i></div>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td data-label="Service title">
-                                <img src="assets/images/table-data/table-data-2.jpg" alt="">
-                                <span>Hous Shift Service</span>
-                            </td>
-                            <td data-label="Order ID">#2005601</td>
-                            <td data-label="Order Ammount">1455.8768</td>
-                            <td data-label="Status">Complete</td>
-                            <td data-label="Action">
-                                <div class="action">
-                                    <div class="view"><i class="bi bi-eye"></i></div>
-                                    <div class="delete"><i class="bi bi-trash3"></i></div>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td data-label="Service title">
-                                <img src="assets/images/table-data/table-data-3.jpg" alt="">
-                                <span>Electric Line Services</span>
-                            </td>
-                            <td data-label="Order ID">#200129875</td>
-                            <td data-label="Order Ammount">1268.8955</td>
-                            <td data-label="Status">Complete</td>
-                            <td data-label="Action">
-                                <div class="action">
-                                    <div class="view"><i class="bi bi-eye"></i></div>
-                                    <div class="delete"><i class="bi bi-trash3"></i></div>
-                                </div>
-                            </td>
-                        </tr> -->
-                    </table>
-                </div>
-            </div>
-        </section>
+    <div class="container" id="show">
+        <div class="order-table" style="overflow-x:auto; border: 1px solid #ccc; border-radius: 10px; padding: 10px;">
+            <table style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+                <thead>
+                    <tr class="head" style="background-color: #f2f2f2; color: #333; text-align: left;">
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Vendor Name</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Email</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">City</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Service</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Subservice</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Contact</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Photo</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Price</th>
+                        <th style="padding: 12px; border-bottom: 2px solid #ccc;">Status</th>
+                    </tr>
+                </thead>
+                <!-- Add <tbody> rows dynamically here -->
+            </table>
+        </div>
+    </div>
+</section>
+
         <!-- End login-area section -->
 
         <!-- Start footer section -->
