@@ -150,15 +150,16 @@ public class AdminRestControllers {
     }
     
     @GetMapping("/Accept")
-    public String go12(@RequestParam int id) {
+    public String go12(@RequestParam String id) {
         try {
-            
-            ResultSet rs = dbloader.executeQuery("select * from vendor where vid='"+id+"'  ");
+            int id1=Integer.parseInt(id);
+            ResultSet rs = dbloader.executeQuery("select * from vendor where vid='"+id1+"'  ");
             if(rs.next()){
-                
+                rs.updateString("vstatus", "Accepted");
+                rs.updateRow();
                 return "vendor accepted";
             }else{
-                return "vendor blocked";
+                return "vendor doesn't exist";
             }
         } catch (Exception ex) {
             return ex.toString();
@@ -166,15 +167,16 @@ public class AdminRestControllers {
     }
     
     @GetMapping("/Block")
-    public String go13(@RequestParam int id) {
+    public String go13(@RequestParam String id) {
         try {
-            
-            ResultSet rs = dbloader.executeQuery("select * from vendor where vid='"+id+"'  ");
+            int id1=Integer.parseInt(id);
+            ResultSet rs = dbloader.executeQuery("select * from vendor where vid='"+id1+"'  ");
             if(rs.next()){
-                
+                rs.updateString("vstatus","Blocked");
+                rs.updateRow();
                 return "vendor blocked";
             }else{
-                return "vendor accepted";
+                return "vendor doesn't exist";
             }
         } catch (Exception ex) {
             return ex.toString();
