@@ -32,5 +32,10 @@ public class VendorControllers {
     public String v6(){
         return "VendorManagePhotos";
     }
+    
+    @GetMapping("/EditVendorDetails")
+    public String v10(){
+        return "EditVendorDetails";
+    }
 }
 
