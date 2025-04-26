@@ -24,17 +24,17 @@ public class VendorRestControllers {
 
     @PostMapping("/Vendorsignup")
     public String v1(@RequestParam String vname,
-             @RequestParam String vemail,
-             @RequestParam String vpass,
-             @RequestParam String vcity,
-             @RequestParam String vservice,
-             @RequestParam String vsservice,
-             @RequestParam String start,
-             @RequestParam String end,
-             @RequestParam String price,
-             @RequestParam String contact,
-             @RequestParam MultipartFile photo,
-             @RequestParam String desc) {
+            @RequestParam String vemail,
+            @RequestParam String vpass,
+            @RequestParam String vcity,
+            @RequestParam String vservice,
+            @RequestParam String vsservice,
+            @RequestParam String start,
+            @RequestParam String end,
+            @RequestParam String price,
+            @RequestParam String contact,
+            @RequestParam MultipartFile photo,
+            @RequestParam String desc) {
         System.out.println("controller called");
         try {
 
@@ -106,11 +106,11 @@ public class VendorRestControllers {
     }
 
     @PostMapping("/vendorManagePhotos")
-    public String v7(@RequestParam String vdesc, @RequestParam MultipartFile vphoto,HttpSession session) {
+    public String v7(@RequestParam String vdesc, @RequestParam MultipartFile vphoto, HttpSession session) {
         try {
-            Integer id=(Integer) session.getAttribute("vid");
+            Integer id = (Integer) session.getAttribute("vid");
 
-            ResultSet rs = dbloader.executeQuery("select * from vendorphoto");
+            ResultSet rs = dbloader.executeQuery("select * from vendorphoto where vid='"+id+"'");
 
             String projectPath = System.getProperty("user.dir");
             String internal_path = "/src/main/resources/static";
@@ -141,12 +141,12 @@ public class VendorRestControllers {
     }
 
     @GetMapping("/deletePhoto")
-    public String v9(@RequestParam int id,HttpSession session) {
+    public String v9(@RequestParam int id, HttpSession session) {
         try {
 
             ResultSet rs = dbloader.executeQuery("select * from vendorphoto where pid='" + id + "'  ");
             if (rs.next()) {
-                
+
                 session.getAttribute("vid");
                 rs.deleteRow();
                 return "photo deleted successfully";
@@ -157,4 +157,48 @@ public class VendorRestControllers {
             return ex.toString();
         }
     }
+
+    @PostMapping("/editvdetails")
+    public String v11(HttpSession session, @RequestParam String vname,
+            @RequestParam String vcity,
+            @RequestParam String start,
+            @RequestParam String end,
+            @RequestParam String price,
+            @RequestParam String contact,
+            @RequestParam String desc) {
+        System.out.println("controller called");
+        try {
+            Integer vid = (Integer) session.getAttribute("vid");
+            ResultSet rs = dbloader.executeQuery("select * from vendor where vid='" + vid + "'");
+            if (rs.next()) {
+                rs.moveToCurrentRow();
+                rs.updateString("vname", vname);
+                rs.updateInt("vcity", Integer.parseInt(vcity));
+                rs.updateString("vstart", start);
+                rs.updateString("vend", end);
+                rs.updateString("vprice", price);
+                rs.updateString("vcontact", contact);
+                rs.updateString("vdesc", desc);
+                rs.updateRow();
+                return "success";
+            } else {
+                return "vendor not found";
+            }
+        } catch (Exception ex) {
+            return ex.toString();
+        }
+    }
+
+@GetMapping("/getdata")
+public String getdata(HttpSession session) {
+    Integer id = (Integer) session.getAttribute("vid");
+    String query = "SELECT v.*, s.sname " +
+                   "FROM vendor v " +
+                   "JOIN services s ON v.vservice = s.sid " +
+                   "WHERE v.vid = '" + id + "'";
+    String ans = new RDBMS_TO_JSON().generateJSON(query);
+    return ans;
+}
+
+
 }
