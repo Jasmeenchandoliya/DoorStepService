@@ -4,9 +4,12 @@
  */
 package DoorStepServiceProject.DoorStepServiceProject.Controllers;
 
+import DoorStepServiceProject.DoorStepServiceProject.vmm.RDBMS_TO_JSON;
 import DoorStepServiceProject.DoorStepServiceProject.vmm.dbloader;
+
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,5 +76,29 @@ public class UserRestControllers {
         } catch (Exception ex) {
             return ex.toString();
         }
+    }
+
+    @GetMapping("/getCity")
+    public String us2() {
+        String ans1 = new RDBMS_TO_JSON().generateJSON("select * from cities");
+        System.out.println(ans1);
+        return ans1;
+    }
+
+    @PostMapping("/Service")
+    public String us3(@RequestParam String cityid) {
+        int cid = Integer.parseInt(cityid);
+        String query = "SELECT distinct services.* FROM services JOIN vendor ON vendor.vservice = services.sid WHERE vendor.vcity = '" + cid + "' and vendor.vstatus ='Accepted'";
+        String ans = new RDBMS_TO_JSON().generateJSON(query);
+        return ans;
+    }
+
+    @PostMapping("/Vendor")
+    public String us4(@RequestParam String servid, @RequestParam String cityid) {
+        int id1 = Integer.parseInt(servid);
+        int id2 = Integer.parseInt(cityid);
+        String query = "SELECT distinct vendor.* FROM vendor JOIN services ON services.sid=vendor.vservice  WHERE vendor.vservice = '" + id1 + "' and vendor.vcity = '"+ id2 +"' ";
+        String ans = new RDBMS_TO_JSON().generateJSON(query);
+        return ans;
     }
 }
