@@ -57,6 +57,7 @@
                 document.getElementById("city").innerHTML = finalhtml;
                 $('.loc-select').niceSelect('destroy'); // <- destroy existing ones
                 $('.loc-select').niceSelect(); // <- re-init all again
+                //window.location.href="/UserService";
             }
 
             function showCity() {
@@ -75,11 +76,11 @@
                     s += `<div class="col-md-6 col-lg-4 wow animate fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms">`;
                     s += `<div class="single-blog layout-3">`;
                     s += `<div class="blog-thumb">`;
-                    s += "<a href=\"blog-details.html\"><img src=\"myuploads/" + subobj.cityphoto + "\" alt=\"\"></a>";
+                    s += "<a href=\"UserService\"><img src=\"myuploads/" + subobj.cityphoto + "\" alt=\"\"></a>";
 
                     s += `</div>`;
                     s += `<div class="blog-inner">`;
-                    s += "<h4><a href=\"blog-details.html\">" + subobj.cityname + "</a></h4>";
+                    s += "<h4><a href=\"UserService\">" + subobj.cityname + "</a></h4>";
                     s += "<p>" + subobj.citydesc + "</p>";
 
                     s += `</div>`;
@@ -87,6 +88,13 @@
                     s += `</div>`;
                 }
                 document.getElementById("show").innerHTML = s;
+            }
+            
+            function redirectToPage(cityid){
+                
+                
+                    window.location.href="UserService?cityid="+cityid.value;
+                
             }
         </script>
     </head>
@@ -116,7 +124,7 @@
         <!-- Start header section -->
         <header class="header-3 sticky_top">
             <div class="header-logo">
-                <a href="index3.html"><img src="assets/images/home3/logo.svg" alt=""></a>
+                <a href="index3.html"><img src="assets/images/home2/logo.svg" alt=""></a>
             </div>
             <div class="main-menu">
                 <nav class="main-nav">
@@ -211,7 +219,7 @@
                             <div class="location-search">
                                 <div class="location-btn">
                                     <i><img src="assets/images/icons/location.svg" alt=""></i>
-                                    <select class="loc-select" id="city">
+                                    <select class="loc-select" onchange="redirectToPage(this)" id="city">
                                         <!--<option selected="">Dhaka</option>
                                         <option value="barisal">Barisal</option>
                                         <option value="khulna">Khulna</option>
