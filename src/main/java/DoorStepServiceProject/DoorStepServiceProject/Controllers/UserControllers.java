@@ -23,5 +23,19 @@ public class UserControllers {
     public String u1(){
         return "UserLogin";
     }
+    
+    @GetMapping("/UserHome")
+    public String u2(){
+        return "UserHome";
+    }
 
+    @GetMapping("/UserService")
+    public String u3(){
+        return "UserService";
+    }
+    
+    @GetMapping("/UserVendorDetails")
+    public String u4(){
+        return "UserVendorDetails";
+    }
 }
