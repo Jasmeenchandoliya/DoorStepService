@@ -55,8 +55,8 @@ public class VendorRestControllers {
                 rs.updateInt("vcity", Integer.parseInt(vcity));
                 rs.updateInt("vservice", Integer.parseInt(vservice));
                 rs.updateString("vsservice", vsservice);
-                rs.updateString("vstart-time", start);
-                rs.updateString("vend-time", end);
+                rs.updateString("vstart", start);
+                rs.updateString("vend", end);
                 rs.updateString("vprice", price);
                 rs.updateString("vcontact", contact);
                 rs.updateString("vdesc", desc);
