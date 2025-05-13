@@ -42,7 +42,7 @@
                         .then(ans => renderData(ans));
             }
             function renderData(ans) {
-                alert("function called");
+                
                 console.log(ans);
                 ans = JSON.parse(ans);
                 let arrObj = ans["ans"];
@@ -66,29 +66,73 @@
                         .then(ans => renderData1(ans));
             }
             function renderData1(ans) {
-                console.log(ans);
-                var mainobj = JSON.parse(ans);
-                var arr = mainobj["ans"];
-                var s = "";
+    console.log(ans);
+    var mainobj = JSON.parse(ans);
+    var arr = mainobj["ans"];
+    var s = "";
 
-                for (var i = 0; i < arr.length; i++) {
-                    var subobj = arr[i];
-                    s += `<div class="col-md-6 col-lg-4 wow animate fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms">`;
-                    s += `<div class="single-blog layout-3">`;
-                    s += `<div class="blog-thumb">`;
-                    s += "<a href=\"UserService\"><img src=\"myuploads/" + subobj.cityphoto + "\" alt=\"\"></a>";
+    for (var i = 0; i < arr.length; i++) {
+        var subobj = arr[i];
 
-                    s += `</div>`;
-                    s += `<div class="blog-inner">`;
-                    s += "<h4><a href=\"UserService\">" + subobj.cityname + "</a></h4>";
-                    s += "<p>" + subobj.citydesc + "</p>";
+        s += `<div class="col-md-6 col-lg-4 wow animate fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms" style="padding: 15px;">`;
 
-                    s += `</div>`;
-                    s += `</div>`;
-                    s += `</div>`;
-                }
-                document.getElementById("show").innerHTML = s;
-            }
+        s += `<div class="single-blog layout-3" style="
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        ">`;
+
+        s += `<div class="blog-thumb" style="overflow: hidden;">`;
+        s += `<a href="UserService?cityid=${subobj.cityid}">` +
+             `<img src="myuploads/${subobj.cityphoto}" alt="${subobj.cityname}" style="
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                display: block;
+                transition: transform 0.3s ease;
+             " 
+             onmouseover="this.style.transform='scale(1.05)'" 
+             onmouseout="this.style.transform='scale(1)'" ></a>`;
+        s += `</div>`;
+
+        s += `<div class="blog-inner" style="padding: 20px; text-align: left;">`;
+
+        s += `<h4 style="
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #222;
+        "><a href="UserService?cityid=${subobj.cityid}" style="
+            text-decoration: none;
+            color: #222;
+            transition: color 0.3s ease;
+        " 
+        onmouseover="this.style.color='#34A853'" 
+        onmouseout="this.style.color='#222'"
+        >${subobj.cityname}</a></h4>`;
+
+        s += `<p style="
+            color: #555;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        ">${subobj.citydesc}</p>`;
+
+        s += `</div>`; // blog-inner
+        s += `</div>`; // single-blog
+        s += `</div>`; // col
+    }
+
+    document.getElementById("show").innerHTML = s;
+}
+
+
             
             function redirectToPage(cityid){
                 
@@ -1419,49 +1463,7 @@
                     </div>
                 </div>
                 <div class="row g-4" id="show">
-                    <!--<div class="col-md-6 col-lg-4 wow animate fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms">
-                        <div class="single-blog layout-3">
-                            <div class="blog-thumb">
-                                <a href="blog-details.html"><img src="assets/images/blog/blog-4.jpg" alt=""></a>
-                                
-                            </div>
-                            <div class="blog-inner">
-                                <h4><a href="blog-details.html">Cleaning & Renovation Servicl By Our Expert Cleaner.</a></h4>
-                                <p>Aenean fermentum sapien ac aliquet thoseneni gravida. Fusce a ipsum metus answerala onike.</p>
-                                <a href="blog-details.html">Read more<span><i class="bi bi-arrow-right"></i></span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 wow animate fadeInLeft" data-wow-delay="400ms" data-wow-duration="1500ms">
-                        <div class="single-blog layout-3">
-                            <div class="blog-thumb">
-                                <a href="blog-details.html"><img src="assets/images/blog/blog-2.jpg" alt=""></a>
-                                <div class="date">
-                                    <span>30 March, 2022</span>
-                                </div>
-                            </div>
-                            <div class="blog-inner">
-                                <h4><a href="blog-details.html">Praesent at sem mollis nisijabi elementum lectus.</a></h4>
-                                <p>Aenean fermentum sapien ac aliquet thoseneni gravida. Fusce a ipsum metus answerala onike.</p>
-                                <a href="blog-details.html">Read more<span><i class="bi bi-arrow-right"></i></span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4 wow animate fadeInLeft" data-wow-delay="600ms" data-wow-duration="1500ms">
-                        <div class="single-blog layout-3">
-                            <div class="blog-thumb">
-                                <a href="blog-details.html"><img src="assets/images/blog/blog-3.jpg" alt=""></a>
-                                <div class="date">
-                                    <span>30 March, 2022</span>
-                                </div>
-                            </div>
-                            <div class="blog-inner">
-                                <h4><a href="blog-details.html">Aenean at sem mollis sapien elementum lectus.</a></h4>
-                                <p>Aenean fermentum sapien ac aliquet thoseneni gravida. Fusce a ipsum metus answerala onike.</p>
-                                <a href="blog-details.html">Read more<span><i class="bi bi-arrow-right"></i></span></a>
-                            </div>
-                        </div>
-                    </div>-->
+                    
                 </div>
             </div>
         </section>
