@@ -43,7 +43,8 @@
                 var start = document.getElementById("start").value;
                 var end = document.getElementById("end").value;
                 var desc = document.getElementById("desc").value;
-              
+                var includ=document.getElementById("includ").value;
+                var exclud=document.getElementById("exclud").value;
 
                 var formdata = new FormData();
                 formdata.append("vname", vname);
@@ -53,6 +54,8 @@
                 formdata.append("price", price);
                 formdata.append("contact", contact);
                 formdata.append("desc", desc);
+                formdata.append("includ",includ);
+                formdata.append("exclud",exclud);
                 fetch("/editvdetails", {method: "POST", body: formdata})
                         .then(response => response.text())
                         .then(ans => renderHTML(ans));
@@ -128,6 +131,8 @@
                     document.getElementById("start").value = ct.vstart;
                     document.getElementById("end").value = ct.vend;
                     document.getElementById("desc").value = ct.vdesc;
+                    document.getElementById("includ").value=ct.included;
+                    document.getElementById("exclud").value=ct.excluded;
                 }
             }
 
@@ -317,6 +322,16 @@
                             <div class="col-md-6">
                                 <label for="endtime">End-Time
                                     <input type="text" id="end" name="end" required>
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <label for="what's Included">What's Included
+                                    <textarea style="width:100%" id="includ"  name="desc" cols="20" rows="10" ></textarea>
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <label for="what's Excluded">What's Excluded
+                                    <textarea style="width:100%" id="exclud"  name="desc" cols="20" rows="10" ></textarea>
                                 </label>
                             </div>
                             <div class="col-12">
