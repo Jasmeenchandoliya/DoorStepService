@@ -38,4 +38,20 @@ public class UserControllers {
     public String u4(){
         return "UserVendorDetails";
     }
+    
+    @GetMapping("/UserHomeSingleVendorDetail")
+    public String u5(){
+        return "UserHomeSingleVendorDetail";
+    }
+    
+    @GetMapping("/ServiceBookingDateSelection")
+    public String u6(){
+        return "ServiceBookingDateSelection";
+    }
+    
+    @GetMapping("/payment")
+    public String u7(){
+        return "payment";
+    }
+    
 }
