@@ -34,7 +34,9 @@ public class VendorRestControllers {
             @RequestParam String price,
             @RequestParam String contact,
             @RequestParam MultipartFile photo,
-            @RequestParam String desc) {
+            @RequestParam String desc,
+            @RequestParam String includ,
+            @RequestParam String exclud) {
         System.out.println("controller called");
         try {
 
@@ -60,6 +62,8 @@ public class VendorRestControllers {
                 rs.updateString("vprice", price);
                 rs.updateString("vcontact", contact);
                 rs.updateString("vdesc", desc);
+                rs.updateString("included", includ);
+                rs.updateString("excluded", exclud);
                 rs.updateString("vstatus", "pending");
                 rs.updateString("vphoto", orgName);
 
@@ -95,7 +99,9 @@ public class VendorRestControllers {
             ResultSet rs = dbloader.executeQuery("select * from vendor where vemail='" + email + "'and vpass='" + password + "' ");
             if (rs.next()) {
                 int id = rs.getInt("vid");
+                
                 session.setAttribute("vid", id);
+                session.setAttribute("vemail", email);
                 return "success";
             } else {
                 return "fail";
@@ -110,7 +116,7 @@ public class VendorRestControllers {
         try {
             Integer id = (Integer) session.getAttribute("vid");
 
-            ResultSet rs = dbloader.executeQuery("select * from vendorphoto where vid='"+id+"'");
+            ResultSet rs = dbloader.executeQuery("select * from vendorphoto where vid='" + id + "'");
 
             String projectPath = System.getProperty("user.dir");
             String internal_path = "/src/main/resources/static";
@@ -165,7 +171,9 @@ public class VendorRestControllers {
             @RequestParam String end,
             @RequestParam String price,
             @RequestParam String contact,
-            @RequestParam String desc) {
+            @RequestParam String desc,
+            @RequestParam String includ,
+            @RequestParam String exclud) {
         System.out.println("controller called");
         try {
             Integer vid = (Integer) session.getAttribute("vid");
@@ -179,6 +187,8 @@ public class VendorRestControllers {
                 rs.updateString("vprice", price);
                 rs.updateString("vcontact", contact);
                 rs.updateString("vdesc", desc);
+                rs.updateString("included", includ);
+                rs.updateString("excluded", exclud);
                 rs.updateRow();
                 return "success";
             } else {
@@ -189,16 +199,62 @@ public class VendorRestControllers {
         }
     }
 
-@GetMapping("/getdata")
-public String getdata(HttpSession session) {
-    Integer id = (Integer) session.getAttribute("vid");
-    String query = "SELECT v.*, s.sname " +
-                   "FROM vendor v " +
-                   "JOIN services s ON v.vservice = s.sid " +
-                   "WHERE v.vid = '" + id + "'";
-    String ans = new RDBMS_TO_JSON().generateJSON(query);
-    return ans;
-}
+    @GetMapping("/getdata")
+    public String getdata(HttpSession session) {
+        Integer id = (Integer) session.getAttribute("vid");
+        String query = "SELECT v.*, s.sname "
+                + "FROM vendor v "
+                + "JOIN services s ON v.vservice = s.sid "
+                + "WHERE v.vid = '" + id + "'";
+        String ans = new RDBMS_TO_JSON().generateJSON(query);
+        return ans;
+    }
+    
+    @GetMapping("/manageuserbooking")
+    public String v13(HttpSession session){
+        String vemail = (String) session.getAttribute("vemail");
+        String ans = new RDBMS_TO_JSON().generateJSON("select * from booking where vendor_email='"+vemail+"' ");
+        return ans;
+    }
 
-
+    @GetMapping("/fetchdata")
+    public String v14(@RequestParam int id){
+        String ans=new RDBMS_TO_JSON().generateJSON("select * from booking_detail where bid='"+id+"' ");
+        return ans;
+    }
+    
+    @GetMapping("/Acceptuser")
+    public String v15(@RequestParam String id) {
+        try {
+            int id1=Integer.parseInt(id);
+            ResultSet rs = dbloader.executeQuery("select * from booking where booking_id='"+id1+"'  ");
+            if(rs.next()){
+                rs.updateString("status", "Accepted");
+                rs.updateRow();
+                return "user accepted";
+            }else{
+                return "user doesn't exist";
+            }
+        } catch (Exception ex) {
+            return ex.toString();
+        }
+    }
+    
+    @GetMapping("/Pendinguser")
+    public String v16(@RequestParam String id) {
+        try {
+            int id1=Integer.parseInt(id);
+            ResultSet rs = dbloader.executeQuery("select * from booking where booking_id='"+id1+"'  ");
+            if(rs.next()){
+                rs.updateString("status","pending");
+                rs.updateRow();
+                return "user pending";
+            }else{
+                return "user doesn't exist";
+            }
+        } catch (Exception ex) {
+            return ex.toString();
+        }
+    }
+    
 }
