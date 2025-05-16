@@ -195,6 +195,7 @@ public class VendorRestControllers {
                 return "vendor not found";
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             return ex.toString();
         }
     }
