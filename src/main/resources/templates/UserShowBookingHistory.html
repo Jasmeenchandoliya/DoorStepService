@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+
+
+    <!-- Mirrored from demo-egenslab.b-cdn.net/html/serve/preview/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Apr 2025 10:21:50 GMT -->
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>SERVE - On Demand Services HTML Template</title>
+        <link rel="icon" href="assets/images/faviconS.png" type="image/gif" sizes="20x20">
+
+        <!-- Bootstrap CSS -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap icons CSS -->
+        <link href="assets/css/bootstrap-icons.css" rel="stylesheet">
+        <!-- Fontawesome all CSS -->
+        <link href="assets/css/all.min.css" rel="stylesheet">
+        <!-- Fontawesome CSS -->
+        <link href="assets/css/fontawesome.min.css" rel="stylesheet">
+        <!-- Swiper slider CSS -->
+        <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+        <!-- slick-slide -->
+        <link rel="stylesheet" href="assets/css/slick-theme.css">
+        <link rel="stylesheet" href="assets/css/slick.css">
+        <!-- Nice select CSS -->
+        <link rel="stylesheet" href="assets/css/nice-select.css">
+        <!-- Magnific-popup CSS -->
+        <link rel="stylesheet" href="assets/css/magnific-popup.css">
+        <!-- Animate CSS -->
+        <link rel="stylesheet" href="assets/css/animate.min.css">
+        <!--  Style CSS  -->
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- Title -->
+        <script>
+            function ShowBookingHistory() {
+
+                fetch("/bookinghistory")
+                        .then(response => response.text())
+                        .then(ans => renderHTML1(ans));
+            }
+            function renderHTML1(ans) {
+                console.log(ans);
+                var mainobj = JSON.parse(ans);
+                var arr = mainobj["ans"];
+                console.log(arr);
+                var s = "";
+                s += "<div class='order-table' style='overflow-x:auto; border:1px solid #ccc; border-radius:10px; padding:10px;'>";
+                s += "<table style='width:100%; border-collapse:collapse; font-family:Arial, sans-serif;'>";
+                s += "<thead>";
+                s += "<tr style='background-color:#f2f2f2; color:#333; text-align:left;'>";
+                s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Date</th>";
+                s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>User Email</th>";
+                s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Order Amount</th>";
+                s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>Status</th>";
+                s += "<th style='padding:12px; border-bottom:2px solid #ccc;'>View Slots</th>";
+                s += "</tr>";
+                s += "</thead>";
+                for (var i = 0; i < arr.length; i++) {
+                var subobj = arr[i];
+                console.log("------------------");
+                console.log(subobj);
+                        s += "<tr>";
+                        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.date + "</td>";
+                        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.user_email + "</td>";
+                        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.total_price + "</td>";
+                        s += "<td style='padding:10px; border-bottom:1px solid #ddd;'>" + subobj.status + "</td>";
+        
+                        s +=`<td data-label="Action">
+                                                    <div class="action">
+                                                        <div class="view">
+                                                                      
+                                                            <i class="bi bi-eye" data-bs-toggle="modal" data-bs-target="#myModal" onclick="fetchDataForPopup(${subobj.booking_id})"></i>
+            
+                                                                    <!-- The Modal -->
+                                                                    <div class="modal" id="myModal">
+                                                                      <div class="modal-dialog modal-dialog-centered">
+                                                                        <div class="modal-content">
+
+                                                                          <!-- Modal Header -->
+                                                                          <div class="modal-header">
+                                                                            <h4 class="modal-title text-dark">View Slots</h4>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                          </div>
+
+                                                                          <!-- Modal body -->
+                                                                          <div class="modal-body text-dark" id="modalBody">
+                                                                            <h3>this is body of model</h3>
+                                                                          </div>
+
+                                                                          <!-- Modal footer -->
+                                                                          <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                                                                          </div>
+
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                                         </div>
+                                                    </div>
+                                                </td>`;
+
+                    s += "</tr>";
+                }
+
+                s += "</table>";
+                s += "</div>";
+
+                document.getElementById("show").innerHTML = s;
+            }
+            
+            function fetchDataForPopup(id) { 
+
+            fetch("/fetchuserdata?id="+id)
+                    .then(response => response.text())
+                    .then(ans => renderHTML(ans));
+            }
+            function renderHTML(ans)
+            {
+                 console.log(ans);
+                ans = JSON.parse(ans);
+                let arrObj = ans["ans"];
+                let finalhtml = "";
+                finalhtml += `<table class="table table-hover" style="width:100%">
+                                            <thead>
+                                                <tr class="head">
+                                                    <th>Start Time</th>
+                                                    <th>End Time</th>
+                                                </tr>
+                                            </thead>`
+                                            for (let i = 0; i < arrObj.length; i++)
+                                            {
+                                                let finalObj = arrObj[i];
+                                                finalhtml += `<tr>
+                                                
+                                                <td >${finalObj.start_slot}:00</td>
+                                                <td>${finalObj.end_slot}:00</td>                                               
+                                            </tr>`
+                                            }
+                                            
+                finalhtml+="</table>";
+                
+                document.getElementById("modalBody").innerHTML = finalhtml;
+            }
+
+            
+            
+        </script>
+    </head>
+
+    <body onload="ShowBookingHistory()" >
+
+        <!--Start preloader area -->
+        <div class="egns-preloader">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-6">
+                        <div class="circle-border">
+                            <div class="moving-circle"></div>
+                            <div class="moving-circle"></div>
+                            <div class="moving-circle"></div>
+                            <svg width="180px" height="150px" viewBox="0 0 187.3 93.7" preserveAspectRatio="xMidYMid meet">
+                            <path stroke="#5BB543" id="outline" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z" />
+                            <path id="outline-bg" opacity="0.05" fill="none" stroke="#959595" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End preloader area  -->
+
+        <!-- Start header section -->
+        <div th:replace="AllHeader :: allheader"></div>
+        <!-- End header section -->
+
+        <!-- Start breadcrumbs section -->
+        <section class="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb-wrapper">
+                            <h2>Booking History</h2>
+                            <span><a href="/">Home</a><i class="bi bi-chevron-right"></i>My Bookings</span>
+                            <div class="arrow-down">
+                                <a href="#down"><i class="bi bi-chevron-down"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End breadcrumbs section -->
+
+        <!-- Start login-area section -->
+        <section id="down" class="login-area sec-p">
+            <div class="container" id="show">
+                <div class="order-table" style="overflow-x:auto; border: 1px solid #ccc; border-radius: 10px; padding: 10px;">
+                    <table style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+                        <thead>
+                            <tr class="head" style="background-color: #f2f2f2; color: #333; text-align: left;">
+                                <th style="padding: 12px; border-bottom: 2px solid #ccc;">Date</th>
+                                <th style="padding: 12px; border-bottom: 2px solid #ccc;">User Email</th>
+                                <th style="padding: 12px; border-bottom: 2px solid #ccc;">Order Amount</th>
+                                <th style="padding: 12px; border-bottom: 2px solid #ccc;">Status</th>
+                                <th style="padding: 12px; border-bottom: 2px solid #ccc;">View Slots</th>
+
+                            </tr>
+                        </thead>
+                        <!-- Add <tbody> rows dynamically here -->
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- End login-area section -->
+
+        <!-- Start footer section -->
+        <div th:replace="Footer :: footer"></div>
+        <!-- End footer section -->
+
+        <!--  Main jQuery  -->
+        <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.6.0.min.js"></script>
+        <!-- Popper and Bootstrap JS -->
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <!-- Swiper slider JS -->
+        <script src="assets/js/swiper-bundle.min.js"></script>
+        <!-- Slick slider JS -->
+        <script src="assets/js/slick.js"></script>
+        <!-- Nice select JS -->
+        <script src="assets/js/jquery.nice-select.min.js"></script>
+        <!-- Waypoints JS -->
+        <script src="assets/js/waypoints.min.js"></script>
+        <!-- Counterup JS -->
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <!-- Magnific-popup  JS -->
+        <script src="assets/js/jquery.magnific-popup.min.js"></script>
+        <!-- Wow JS -->
+        <script src="assets/js/wow.min.js"></script>
+        <script src="assets/js/anime.min.js"></script>
+        <!-- Custom JS -->
+        <script src="assets/js/custom.js"></script>
+
+    </body>
+
+
+    <!-- Mirrored from demo-egenslab.b-cdn.net/html/serve/preview/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Apr 2025 10:22:09 GMT -->
+</html>
+
